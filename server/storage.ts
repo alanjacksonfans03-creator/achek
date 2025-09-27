@@ -1,3 +1,19 @@
+
+
+// Type-only imports for schema types
+
+
+type Newsletter = typeof selectNewsletterSchema._type;
+type InsertNewsletter = typeof insertNewsletterSchema._type;
+type User = typeof selectUserSchema._type;
+type InsertUser = typeof insertUserSchema._type;
+type PortfolioProject = typeof selectPortfolioSchema._type;
+type InsertPortfolioProject = typeof insertPortfolioSchema._type;
+type Testimonial = typeof selectTestimonialSchema._type;
+type InsertTestimonial = typeof insertTestimonialSchema._type;
+type Message = typeof selectMessageSchema._type;
+type InsertMessage = typeof insertMessageSchema._type;
+
 import {
   insertNewsletterSchema,
   selectNewsletterSchema,
@@ -11,9 +27,6 @@ import {
   selectMessageSchema
 } from "@shared/schema";
 import { connection as pool } from "./db";
-
-type Newsletter = typeof selectNewsletterSchema._type;
-type InsertNewsletter = typeof insertNewsletterSchema._type;
 import { randomUUID } from "crypto";
 import nodemailer from "nodemailer";
 import { connection  } from "./db";
@@ -31,14 +44,7 @@ export type Order = {
 
 // --- Storage Interface ---
 
-type User = typeof selectUserSchema._type;
-type InsertUser = typeof insertUserSchema._type;
-type PortfolioProject = typeof selectPortfolioSchema._type;
-type InsertPortfolioProject = typeof insertPortfolioSchema._type;
-type Testimonial = typeof selectTestimonialSchema._type;
-type InsertTestimonial = typeof insertTestimonialSchema._type;
-type Message = typeof selectMessageSchema._type;
-type InsertMessage = typeof insertMessageSchema._type;
+
 
 export interface IStorage {
   // Users
@@ -90,7 +96,7 @@ export class DBStorage implements IStorage {
   // portifolo
       const projectsList: PortfolioProject[] = [
         {
-          id: randomUUID(),
+          id: 1,
           title: "FinPay NG",
           description:
             "A modern fintech dashboard for Nigerian SMEs. Provides real-time analytics, payments integration, and automated invoicing.",
@@ -102,7 +108,7 @@ export class DBStorage implements IStorage {
           createdAt: new Date(),
         },
         {
-          id: randomUUID(),
+          id: 2,
           title: "QuickEats NG",
           description:
             "Food delivery platform designed for Nigerian restaurants. Features live order tracking, restaurant dashboards, and mobile-first design.",
@@ -114,7 +120,7 @@ export class DBStorage implements IStorage {
           createdAt: new Date(),
         },
         {
-          id: randomUUID(),
+          id: 3,
           title: "NaijaHomes",
           description:
             "A real estate platform with property listings, mortgage calculators, and virtual tours tailored for Nigerian buyers.",
@@ -126,7 +132,7 @@ export class DBStorage implements IStorage {
           createdAt: new Date(),
         },
         {
-          id: randomUUID(),
+          id: 4,
           title: "EduAfrica LMS",
           description:
             "An e-learning platform for African universities. Includes video streaming, quizzes, and student progress tracking.",
@@ -138,7 +144,7 @@ export class DBStorage implements IStorage {
           createdAt: new Date(),
         },
         {
-          id: randomUUID(),
+          id: 5,
           title: "MarketHub NG",
           description:
             "An e-commerce marketplace that connects Nigerian vendors with nationwide customers. Features wallet, cart, and seller dashboards.",
@@ -150,7 +156,7 @@ export class DBStorage implements IStorage {
           createdAt: new Date(),
         },
         {
-          id: randomUUID(),
+          id: 6,
           title: "TravelNaija",
           description:
             "Tourism booking platform for Nigerian destinations. Provides flight deals, hotel booking, and local experiences.",
@@ -162,7 +168,7 @@ export class DBStorage implements IStorage {
           createdAt: new Date(),
         },
         {
-          id: randomUUID(),
+          id: 7,
           title: "AgroConnect",
           description:
             "A digital marketplace connecting Nigerian farmers to buyers. Features crop tracking, pricing analytics, and secure payments.",
@@ -174,7 +180,7 @@ export class DBStorage implements IStorage {
           createdAt: new Date(),
         },
         {
-          id: randomUUID(),
+          id: 8,
           title: "HealthLink NG",
           description:
             "Telemedicine platform offering video consultations, prescriptions, and hospital integrations for Nigerian healthcare.",
@@ -186,7 +192,7 @@ export class DBStorage implements IStorage {
           createdAt: new Date(),
         },
         {
-          id: randomUUID(),
+          id: 9,
           title: "EventHub Africa",
           description:
             "Event ticketing and booking solution for concerts, conferences, and weddings across Nigeria.",
@@ -198,7 +204,7 @@ export class DBStorage implements IStorage {
           createdAt: new Date(),
         },
         {
-          id: randomUUID(),
+          id: 10,
           title: "ShopSmart NG",
           description:
             "AI-powered price comparison platform for Nigerian online shoppers. Helps users find the best deals instantly.",
@@ -220,7 +226,7 @@ export class DBStorage implements IStorage {
   // --- Sample Testimonials ---
       const testimonialsList: Testimonial[] = [
         {
-          id: randomUUID(),
+          id: 1,
           clientName: "Elijah Omachoko",
           content:
             "Achek built us a world-class real estate website with seamless property listings. The design is modern and user-friendly, and our leads have doubled.",
@@ -231,7 +237,7 @@ export class DBStorage implements IStorage {
           createdAt: new Date(),
         },
         {
-          id: randomUUID(),
+          id: 2,
           clientName: "Victoria Onuche",
           content:
             "Their developer portfolio platform was beyond my expectations. Clean, fast, and professional. It has helped me attract bigger clients.",
@@ -242,7 +248,7 @@ export class DBStorage implements IStorage {
           createdAt: new Date(),
         },
         {
-          id: randomUUID(),
+          id: 3,
           clientName: "Sarah Johnson",
           content:
             "Achek transformed our online presence completely. The team delivered a stunning website that not only looks amazing but also performs exceptionally well.",
@@ -254,7 +260,7 @@ export class DBStorage implements IStorage {
           createdAt: new Date(),
         },
         {
-          id: randomUUID(),
+          id: 4,
           clientName: "Michael Chen",
           content:
             "The mobile app they developed for us exceeded all expectations. The user experience is seamless, and our customers love the intuitive design.",
@@ -266,7 +272,7 @@ export class DBStorage implements IStorage {
           createdAt: new Date(),
         },
         {
-          id: randomUUID(),
+          id: 5,
           clientName: "Emily Rodriguez",
           content:
             "Working with Achek was a game-changer for our business. They understood our vision perfectly and delivered a solution that surpassed our expectations.",
@@ -278,7 +284,7 @@ export class DBStorage implements IStorage {
           createdAt: new Date(),
         },
         {
-          id: randomUUID(),
+          id: 6,
           clientName: "David Thompson",
           content:
             "Achek's digital marketing strategy helped us reach new heights. Our online visibility has improved dramatically with consistent growth in leads.",
@@ -290,7 +296,7 @@ export class DBStorage implements IStorage {
           createdAt: new Date(),
         },
         {
-          id: randomUUID(),
+          id: 7,
           clientName: "Lisa Park",
           content:
             "The e-commerce platform Achek built for us is absolutely fantastic. The admin panel is intuitive, and our customers love the shopping experience.",
@@ -302,7 +308,7 @@ export class DBStorage implements IStorage {
           createdAt: new Date(),
         },
         {
-          id: randomUUID(),
+          id: 8,
           clientName: "Robert Kim",
           content:
             "From concept to deployment, Achek handled everything professionally. Their cloud solutions made our operations more efficient and scalable.",
@@ -314,7 +320,7 @@ export class DBStorage implements IStorage {
           createdAt: new Date(),
         },
         {
-          id: randomUUID(),
+          id: 9,
           clientName: "Chinedu Okafor",
           content:
             "Our fintech dashboard was delivered flawlessly. Real-time analytics, easy navigation, and a polished UI. Couldn’t have asked for better.",
@@ -326,7 +332,7 @@ export class DBStorage implements IStorage {
           createdAt: new Date(),
         },
         {
-          id: randomUUID(),
+          id: 10,
           clientName: "Amara Nwosu",
           content:
             "Achek created a beautiful learning platform for us. Students love the experience and engagement has skyrocketed since launch.",
@@ -338,7 +344,7 @@ export class DBStorage implements IStorage {
           createdAt: new Date(),
         },
         {
-          id: randomUUID(),
+          id: 11,
           clientName: "Tunde Balogun",
           content:
             "Their food delivery solution for us was smooth, real-time, and scalable. Our restaurants and customers love the system.",
@@ -350,7 +356,7 @@ export class DBStorage implements IStorage {
           createdAt: new Date(),
         },
         {
-          id: randomUUID(),
+          id: 12,
           clientName: "Ngozi Adeyemi",
           content:
             "Achek’s real estate platform was exactly what we needed. Virtual tours and mortgage calculators set us apart from competitors.",
