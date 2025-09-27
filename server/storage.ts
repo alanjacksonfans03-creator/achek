@@ -1,6 +1,14 @@
 import {
   insertNewsletterSchema,
   selectNewsletterSchema,
+  insertUserSchema,
+  selectUserSchema,
+  insertPortfolioSchema,
+  selectPortfolioSchema,
+  insertTestimonialSchema,
+  selectTestimonialSchema,
+  insertMessageSchema,
+  selectMessageSchema
 } from "@shared/schema";
 import { connection as pool } from "./db";
 
@@ -22,8 +30,17 @@ export type Order = {
 };
 
 // --- Storage Interface ---
+
+type User = typeof selectUserSchema._type;
+type InsertUser = typeof insertUserSchema._type;
+type PortfolioProject = typeof selectPortfolioSchema._type;
+type InsertPortfolioProject = typeof insertPortfolioSchema._type;
+type Testimonial = typeof selectTestimonialSchema._type;
+type InsertTestimonial = typeof insertTestimonialSchema._type;
+type Message = typeof selectMessageSchema._type;
+type InsertMessage = typeof insertMessageSchema._type;
+
 export interface IStorage {
-  import type { User, InsertUser, PortfolioProject, Testimonial, Message, InsertMessage } from '../shared/schema';
   // Users
   getUser(id: string): Promise<User | undefined>;
   getUserByEmail(email: string): Promise<User | undefined>;
