@@ -1,0 +1,198 @@
+
+/* Mobile-First Responsive Design Enhancements */
+
+/* Base mobile styles */
+@media (max-width: 768px) {
+  /* Typography scaling */
+  .text-4xl { font-size: 2rem; line-height: 2.25rem; }
+  .text-5xl { font-size: 2.5rem; line-height: 2.75rem; }
+  .text-6xl { font-size: 3rem; line-height: 3.25rem; }
+  
+  /* Container spacing */
+  .container { padding-left: 1rem; padding-right: 1rem; }
+  
+  /* Navigation improvements */
+  .navbar-mobile {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    backdrop-filter: blur(10px);
+  }
+  
+  /* Hero section mobile optimization */
+  .hero-mobile {
+    padding-top: 6rem;
+    padding-bottom: 4rem;
+    text-align: center;
+  }
+  
+  /* Card spacing on mobile */
+  .card-mobile {
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Button sizing */
+  .btn-mobile {
+    width: 100%;
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+  }
+  
+  /* Form inputs mobile-friendly */
+  .input-mobile {
+    font-size: 16px; /* Prevents zoom on iOS */
+    padding: 0.875rem;
+  }
+  
+  /* Image responsive behavior */
+  .img-responsive {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+  
+  /* Grid layouts mobile */
+  .grid-mobile-1 { grid-template-columns: 1fr; }
+  .grid-mobile-2 { grid-template-columns: 1fr; gap: 1rem; }
+  
+  /* Spacing utilities */
+  .px-mobile { padding-left: 1rem; padding-right: 1rem; }
+  .py-mobile { padding-top: 2rem; padding-bottom: 2rem; }
+  .mb-mobile { margin-bottom: 1.5rem; }
+  
+  /* Portfolio project cards */
+  .portfolio-card-mobile {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+  }
+  
+  /* Contact form mobile */
+  .contact-form-mobile {
+    padding: 1.5rem;
+  }
+  
+  /* Testimonial cards mobile */
+  .testimonial-mobile {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* Small mobile devices (320px - 480px) */
+@media (max-width: 480px) {
+  .text-3xl { font-size: 1.75rem; line-height: 2rem; }
+  .text-4xl { font-size: 1.875rem; line-height: 2.125rem; }
+  .text-5xl { font-size: 2.25rem; line-height: 2.5rem; }
+  
+  .px-small-mobile { padding-left: 0.75rem; padding-right: 0.75rem; }
+  .py-small-mobile { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+  
+  /* Smaller button text on very small screens */
+  .btn-small-mobile { font-size: 0.875rem; padding: 0.75rem 1.25rem; }
+}
+
+/* Touch-friendly interactions */
+@media (hover: none) and (pointer: coarse) {
+  .touch-friendly {
+    min-height: 44px; /* Apple's recommended minimum touch target */
+    min-width: 44px;
+  }
+  
+  .btn-touch {
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+    transition: transform 0.15s ease, background-color 0.15s ease;
+  }
+
+  .btn-touch:active {
+    transform: scale(0.98);
+  }
+  
+  /* Remove hover effects on touch devices */
+  .no-touch-hover:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* Add subtle feedback for touch interactions */
+  .card:active,
+  .button:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+
+  /* Enhanced touch targets */
+  button, a, input, select, textarea {
+    min-height: 44px;
+  }
+
+  /* Improve tap highlighting */
+  * {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+  }
+
+  /* Prevent zoom on input focus */
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="password"],
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Landscape mobile orientation */
+@media (max-width: 768px) and (orientation: landscape) {
+  .hero-landscape {
+    padding-top: 4rem;
+    padding-bottom: 2rem;
+  }
+  
+  .navbar-landscape {
+    height: 4rem;
+  }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .high-dpi-image {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+/* Performance optimizations for mobile */
+@media (max-width: 768px) {
+  /* Reduce motion for better performance on low-end devices */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Optimize scrolling performance */
+  .scroll-optimized {
+    -webkit-overflow-scrolling: touch;
+    transform: translateZ(0);
+  }
+
+  /* Reduce paint complexity on mobile */
+  .mobile-optimized {
+    will-change: transform;
+    transform: translateZ(0);
+  }
+
+  /* Improve text rendering on mobile */
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeSpeed;
+  }
+}

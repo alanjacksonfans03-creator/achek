@@ -1,0 +1,67 @@
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://achek.com.ng/sitemap.xml
+
+# Block admin areas and sensitive paths
+Disallow: /admin/
+Disallow: /api/
+Disallow: /server/
+Disallow: /uploads/temp/
+Disallow: /_*
+Disallow: /.*
+
+# Allow important pages
+Allow: /
+Allow: /about
+Allow: /services
+Allow: /portfolio
+Allow: /contact
+Allow: /pricing
+Allow: /blog
+Allow: /testimonials
+Allow: /faq
+Allow: /privacy
+Allow: /terms
+
+# Allow portfolio projects
+Allow: /AdUnit
+Allow: /AgroConnect
+Allow: /deliver
+Allow: /EcommerceDashboard
+Allow: /EduAfricaLMS
+Allow: /EventHub
+Allow: /FintechDashboard
+Allow: /FoodDelivery
+Allow: /HealthLinkNG
+Allow: /Marketplace
+Allow: /NewsPortal
+Allow: /RealEstate
+Allow: /receipt
+Allow: /ShopSmartNG
+Allow: /TravelNaija
+
+# Crawl delay for respectful crawling
+Crawl-delay: 1
+
+# Block common bot patterns
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: MJ12bot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10
+
+# Google-specific directives
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+# Bing-specific directives
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
