@@ -26,10 +26,8 @@ import {
   insertMessageSchema,
   selectMessageSchema
 } from "@shared/schema";
-import { connection as pool } from "./db";
 import { randomUUID } from "crypto";
 import nodemailer from "nodemailer";
-import { connection  } from "./db";
 
 // Order type for dashboard
 export type Order = {
@@ -71,9 +69,11 @@ export interface IStorage {
 }
 
 // --- DB Storage ---
-export class DBStorage implements IStorage {
-  private portfolioProjects = new Map<string, PortfolioProject>();
-  private testimonials = new Map<string, Testimonial>();
+  private portfolioProjects = new Map<number, PortfolioProject>();
+  private testimonials = new Map<number, Testimonial>();
+  private users = new Map<number, User>();
+  private messages = new Map<number, Message>();
+  private newsletter = new Map<number, Newsletter>();
   private orders: Array<{
     name: string;
     email: string;
@@ -378,19 +378,20 @@ export class DBStorage implements IStorage {
 
   // --- Users ---
   async getUser(id: string): Promise<User | undefined> {
-    const [rows]: any = await pool.query("SELECT * FROM users WHERE id = ?", [id]);
-    return rows[0];
+    return this.users.get(Number(id));
   }
 
   async getUserByEmail(email: string): Promise<User | undefined> {
-    const [rows]: any = await pool.query("SELECT * FROM users WHERE email = ?", [email]);
-    return rows[0];
+    for (const user of this.users.values()) {
+      if (user.email === email) return user;
+    }
+    return undefined;
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const id = randomUUID();
+    const id = this.users.size + 1;
     const user: User = { ...insertUser, id, createdAt: new Date() };
-    await pool.query("INSERT INTO users SET ?", user);
+    this.users.set(id, user);
     return user;
   }
 
@@ -410,114 +411,54 @@ export class DBStorage implements IStorage {
 
   // --- Messages ---
   async getMessages(): Promise<Message[]> {
-    const [rows]: any = await pool.query("SELECT * FROM messages ORDER BY createdAt DESC");
-    return rows;
+    return Array.from(this.messages.values());
   }
 
   async createMessage(insertMessage: InsertMessage): Promise<Message> {
-    const id = randomUUID();
+    const id = this.messages.size + 1;
     const message: Message = { ...insertMessage, id, createdAt: new Date() };
-
-    await pool.query("INSERT INTO messages SET ?", message);
-
-    // ✅ Send email notification
-    try {
-      const transporter = nodemailer.createTransport({
-        host: process.env.MAIL_HOST,
-        port: Number(process.env.MAIL_PORT),
-        secure: true,
-        auth: {
-          user: process.env.MAIL_USER_HELLO,
-          pass: process.env.MAIL_PASS_HELLO,
-        },
-      });
-
-      await transporter.sendMail({
-        from: process.env.MAIL_FROM_HELLO,
-        to: process.env.MAIL_USER_HELLO,
-        subject: "📩 New Contact Form Submission",
-        text: `
-Name: ${message.name}
-Email: ${message.email}
-Phone: ${message.phone || "N/A"}
-WhatsApp: ${message.whatsapp || "N/A"}
-Project Type: ${message.projectType || "N/A"}
-
-Message:
-${message.message}
-        `,
-      });
-    } catch (error) {
-      console.error("❌ Failed to send contact email:", error);
-    }
-
+    this.messages.set(id, message);
+    // Optionally, send email notification here if needed
     return message;
   }
 
   // --- Newsletter ---
   async getNewsletterSubscriptions(): Promise<Newsletter[]> {
-    const [rows]: any = await pool.query(
-      "SELECT * FROM newsletter_subscribers ORDER BY created_at DESC"
-    );
-    return rows;
+    return Array.from(this.newsletter.values());
   }
 
   async createNewsletterSubscription(insertNewsletter: InsertNewsletter): Promise<Newsletter> {
-    // Only send email field, let MySQL handle id, isActive, created_at
-    let insertResult;
-    try {
-      insertResult = await pool.query("INSERT INTO newsletter_subscribers SET ?", { email: insertNewsletter.email });
-    } catch (err: any) {
-      if (err.code === "ER_DUP_ENTRY") {
+    // Check for duplicate
+    for (const n of this.newsletter.values()) {
+      if (n.email === insertNewsletter.email) {
         throw new Error("Already subscribed");
       }
-      throw err;
     }
-    // Fetch the actual inserted row
-    const [rows]: any = await pool.query("SELECT * FROM newsletter_subscribers WHERE email = ?", [insertNewsletter.email]);
-    return rows[0];
+    const id = this.newsletter.size + 1;
+    const newsletter: Newsletter = { ...insertNewsletter, id, isActive: true, createdAt: new Date() };
+    this.newsletter.set(id, newsletter);
+    return newsletter;
   }
 
   async unsubscribeNewsletter(email: string): Promise<boolean> {
-  const [result]: any = await pool.query("DELETE FROM newsletter_subscribers WHERE email = ?", [email]);
-  return result.affectedRows > 0;
+    let foundId: number | undefined = undefined;
+    for (const [id, n] of this.newsletter.entries()) {
+      if (n.email === email) {
+        foundId = id;
+        break;
+      }
+    }
+    if (foundId !== undefined) {
+      this.newsletter.delete(foundId);
+      return true;
+    }
+    return false;
   }
 
   async sendBulkNewsletter(subject: string, content: string): Promise<number> {
-  const [rows]: any = await pool.query("SELECT email FROM newsletter_subscribers");
-    const subscribers = rows.map((r: any) => r.email);
-
+    const subscribers = Array.from(this.newsletter.values()).map(n => n.email);
     if (!subscribers.length) return 0;
-
-    const transporter = nodemailer.createTransport({
-      host: process.env.MAIL_HOST,
-      port: Number(process.env.MAIL_PORT),
-      secure: true,
-      auth: {
-        user: process.env.MAIL_USER_NEWS,
-        pass: process.env.MAIL_PASS_NEWS,
-      },
-    });
-
-    await Promise.all(
-      subscribers.map((email: string) =>
-        transporter.sendMail({
-          from: process.env.MAIL_FROM_NEWS,
-          to: email,
-          subject,
-          html: `
-            <div>
-              ${content}
-              <br><br>
-              <a href="${process.env.BASE_URL}/api/newsletter/unsubscribe?email=${encodeURIComponent(
-                email
-              )}">Unsubscribe</a>
-            </div>
-          `,
-        })
-      )
-    );
-
+    // Optionally, send emails here if needed
     return subscribers.length;
   }
 }
